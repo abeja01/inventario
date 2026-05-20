@@ -1,0 +1,183 @@
+<div class="space-y-8 animate-fade-in">
+  
+  <!-- Header Bar -->
+  <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+    <div>
+      <h2 class="text-3xl font-extrabold tracking-tight text-white">
+        Historial de Movimientos
+      </h2>
+      <p class="text-sm text-slate-400 mt-1">
+        Consulte la bitácora completa de entradas, salidas, mermas y ajustes manuales del inventario.
+      </p>
+    </div>
+
+    <!-- Quick Search & Actions -->
+    <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+      <!-- Search Input -->
+      <div class="relative w-full sm:w-80">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+        <input type="text" 
+               [ngModel]="searchTerm()"
+               (ngModelChange)="searchTerm.set($event)"
+               placeholder="Buscar por producto o nota..." 
+               class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-900/40 border border-slate-800 focus:border-amber-500/50 focus:outline-none text-sm text-slate-200 placeholder-slate-500 backdrop-blur-md transition-all duration-300">
+      </div>
+
+      <!-- Filter Dropdown for Mobile -->
+      <div class="relative w-full sm:w-48 sm:hidden">
+        <select [ngModel]="selectedType()"
+                (ngModelChange)="selectedType.set($event)"
+                class="w-full px-4 py-3 rounded-xl bg-slate-900/40 border border-slate-800 focus:border-amber-500/50 focus:outline-none text-sm text-slate-300 appearance-none backdrop-blur-md cursor-pointer transition-all duration-300">
+          @for (t of types; track t) {
+            <option [value]="t" class="bg-slate-950">{{ typeLabels[t] }}</option>
+          }
+        </select>
+        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">unfold_more</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Type Filter Chips for Desktop -->
+  <div class="hidden sm:flex items-center gap-2.5 overflow-x-auto pb-2 border-b border-slate-855/40">
+    @for (t of types; track t) {
+      <button (click)="selectedType.set(t)"
+              [class]="selectedType() === t 
+                ? 'bg-amber-500 text-slate-950 font-bold border-amber-400/30 shadow-lg shadow-amber-500/10' 
+                : 'bg-slate-900/30 hover:bg-slate-800/40 text-slate-400 hover:text-slate-200 border-slate-800/60'"
+              class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all duration-300 cursor-pointer shrink-0">
+        {{ typeLabels[t] }}
+      </button>
+    }
+  </div>
+
+  <!-- Transactions Table & Mobile Cards -->
+  @if (filteredTransactions().length === 0) {
+    <div class="flex flex-col items-center justify-center py-20 text-center rounded-2xl bg-slate-900/10 border border-slate-800/40 backdrop-blur-sm">
+      <span class="material-symbols-outlined text-slate-600 text-6xl mb-4">history</span>
+      <h3 class="font-extrabold text-xl text-slate-300">Sin historial registrado</h3>
+      <p class="text-sm text-slate-500 mt-2 max-w-sm">
+        No se encontraron movimientos que coincidan con la búsqueda.
+      </p>
+    </div>
+  } @else {
+    <!-- Table for Desktop -->
+    <div class="hidden md:block overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/20 backdrop-blur-md shadow-2xl">
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-left text-sm text-slate-350">
+          <thead class="bg-slate-950/40 border-b border-slate-800/80 text-xs font-bold uppercase tracking-widest text-slate-400">
+            <tr>
+              <th scope="col" class="px-6 py-4.5 font-bold">Fecha / Hora</th>
+              <th scope="col" class="px-6 py-4.5 font-bold">Producto</th>
+              <th scope="col" class="px-6 py-4.5 font-bold">Tipo</th>
+              <th scope="col" class="px-6 py-4.5 font-bold text-center">Cantidad</th>
+              <th scope="col" class="px-6 py-4.5 font-bold text-center">Trayectoria</th>
+              <th scope="col" class="px-6 py-4.5 font-bold max-w-xs">Nota de Justificación</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-850/60">
+            @for (tx of filteredTransactions(); track tx.id) {
+              <tr class="hover:bg-slate-900/35 transition-colors duration-200">
+                <!-- Date -->
+                <td class="px-6 py-4 font-medium whitespace-nowrap text-slate-400">
+                  <div class="flex flex-col">
+                    <span class="text-slate-200 font-semibold">{{ tx.date | date:'dd/MM/yyyy' }}</span>
+                    <span class="text-[10px] text-slate-550">{{ tx.date | date:'hh:mm:ss a' }}</span>
+                  </div>
+                </td>
+                <!-- Product -->
+                <td class="px-6 py-4 font-bold text-slate-100 whitespace-nowrap">
+                  {{ tx.productName }}
+                </td>
+                <!-- Type badge -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  @if (tx.type === 'entry') {
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[11px] font-extrabold uppercase tracking-wide">
+                      <span class="material-symbols-outlined text-sm">add_circle</span>
+                      Entrada
+                    </span>
+                  } @else if (tx.type === 'exit') {
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-rose-500/10 border border-rose-500/25 text-rose-400 text-[11px] font-extrabold uppercase tracking-wide">
+                      <span class="material-symbols-outlined text-sm">remove_circle</span>
+                      Salida
+                    </span>
+                  } @else if (tx.type === 'wastage') {
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-400 text-[11px] font-extrabold uppercase tracking-wide">
+                      <span class="material-symbols-outlined text-sm">delete_outline</span>
+                      Merma
+                    </span>
+                  } @else {
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 text-[11px] font-extrabold uppercase tracking-wide">
+                      <span class="material-symbols-outlined text-sm">tune</span>
+                      Ajuste
+                    </span>
+                  }
+                </td>
+                <!-- Quantity -->
+                <td class="px-6 py-4 font-extrabold text-sm text-center whitespace-nowrap"
+                    [class]="tx.type === 'entry' ? 'text-emerald-400' : tx.type === 'exit' ? 'text-rose-400' : tx.type === 'wastage' ? 'text-amber-400' : 'text-indigo-400'">
+                  {{ tx.type === 'entry' ? '+' : '-' }}{{ tx.quantity }}
+                </td>
+                <!-- Trajectory -->
+                <td class="px-6 py-4 text-center whitespace-nowrap text-slate-400 font-semibold">
+                  <div class="flex items-center justify-center gap-2">
+                    <span class="text-xs text-slate-500 font-medium">{{ tx.prevStock }}</span>
+                    <span class="material-symbols-outlined text-xs text-slate-600">arrow_right_alt</span>
+                    <span class="text-slate-200 font-extrabold">{{ tx.newStock }}</span>
+                  </div>
+                </td>
+                <!-- Notes -->
+                <td class="px-6 py-4 text-xs leading-relaxed max-w-xs text-slate-400">
+                  {{ tx.notes || 'Ajuste de inventario sin observaciones.' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mobile view cards -->
+    <div class="md:hidden space-y-4">
+      @for (tx of filteredTransactions(); track tx.id) {
+        <div class="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/80 backdrop-blur-md flex flex-col gap-3 shadow-lg">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-extrabold text-slate-200">{{ tx.productName }}</h4>
+              <p class="text-[10px] text-slate-500 mt-0.5">{{ tx.date | date:'dd/MM/yyyy, hh:mm a' }}</p>
+            </div>
+            
+            @if (tx.type === 'entry') {
+              <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[9px] font-bold uppercase tracking-wider">Entrada</span>
+            } @else if (tx.type === 'exit') {
+              <span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 text-[9px] font-bold uppercase tracking-wider">Salida</span>
+            } @else if (tx.type === 'wastage') {
+              <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[9px] font-bold uppercase tracking-wider">Merma</span>
+            } @else {
+              <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 text-[9px] font-bold uppercase tracking-wider">Ajuste</span>
+            }
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 py-2 bg-slate-950/40 rounded-xl text-center text-xs font-semibold">
+            <div>
+              <span class="text-[9px] text-slate-500 block uppercase font-bold tracking-wider">Cantidad</span>
+              <span [class]="tx.type === 'entry' ? 'text-emerald-400' : 'text-rose-400'" class="font-extrabold">
+                {{ tx.type === 'entry' ? '+' : '-' }}{{ tx.quantity }}
+              </span>
+            </div>
+            <div>
+              <span class="text-[9px] text-slate-500 block uppercase font-bold tracking-wider">Trayectoria</span>
+              <span class="text-slate-300 font-extrabold">
+                {{ tx.prevStock }} → <span class="text-amber-400">{{ tx.newStock }}</span>
+              </span>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-400 italic">
+            <strong>Motivo:</strong> {{ tx.notes || 'Sin justificación.' }}
+          </p>
+        </div>
+      }
+    </div>
+  }
+
+</div>

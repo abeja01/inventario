@@ -1,15 +1,15 @@
-<aside class="flex flex-col w-64 h-full bg-slate-900/60 backdrop-blur-xl border-r border-slate-800/80 p-6 select-none shrink-0">
+<aside class="flex flex-col w-64 h-full bg-neutral-900 border-r border-neutral-800 p-6 select-none shrink-0">
   <!-- Brand logo -->
   <div class="flex items-center gap-3 mb-10 px-2">
-    <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-500 shadow-lg shadow-rose-500/20 text-white">
-      <span class="material-symbols-outlined font-bold text-2xl">restaurant</span>
+    <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-black shadow-sm text-white">
+      <span class="material-symbols-outlined font-bold text-xl">inventory</span>
     </div>
     <div>
-      <h1 class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-amber-400 via-rose-400 to-indigo-400 bg-clip-text text-transparent">
-        GustoStock
+      <h1 class="font-bold text-xl tracking-widest text-white">
+        SISTEMA
       </h1>
-      <p class="text-[10px] font-medium uppercase tracking-widest text-slate-500">
-        Control de Cocina
+      <p class="text-[9px] font-bold uppercase tracking-widest text-gray-500">
+        Gestión
       </p>
     </div>
   </div>
@@ -18,13 +18,13 @@
   <nav class="flex-1 space-y-2">
     @for (link of navLinks; track link.path) {
       <a [routerLink]="link.path"
-         routerLinkActive="bg-gradient-to-r from-slate-800/50 to-slate-800/20 border-l-4 border-amber-500 text-white shadow-inner shadow-white/5"
+         routerLinkActive="bg-neutral-800 border-l-2 border-white text-white"
          [routerLinkActiveOptions]="{exact: link.path === '/dashboard'}"
-         class="flex items-center gap-4 px-4 py-3.5 rounded-xl border border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30 hover:border-slate-800/50 transition-all duration-300 group">
-        <span class="material-symbols-outlined text-xl group-hover:scale-110 transition-transform duration-300">
+         class="flex items-center gap-4 px-4 py-3.5 rounded-xl border border-transparent text-gray-400 hover:text-white hover:bg-neutral-800 transition-all duration-300 group">
+        <span class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform duration-300">
           {{ link.icon }}
         </span>
-        <span class="font-semibold text-sm tracking-wide">
+        <span class="font-bold text-xs tracking-wide">
           {{ link.label }}
         </span>
       </a>
@@ -32,25 +32,21 @@
   </nav>
 
   <!-- Bottom quick info card -->
-  <div class="mt-auto pt-6 border-t border-slate-800/80">
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-950 to-slate-900 border border-slate-800/60 p-4 shadow-xl">
-      <!-- Glow decoration -->
-      <div class="absolute -right-10 -bottom-10 w-24 h-24 bg-amber-500/10 rounded-full blur-xl"></div>
-      
+  <div class="mt-auto pt-6 border-t border-neutral-800">
+    <div class="relative overflow-hidden rounded-2xl bg-black border border-neutral-700 p-4 shadow-sm">
       <div class="flex items-start gap-3">
-        <span class="material-symbols-outlined text-amber-400 mt-0.5">info</span>
+        <span class="material-symbols-outlined text-gray-400 mt-0.5 text-lg">info</span>
         <div>
-          <h4 class="font-bold text-xs text-slate-300">Modo de Operación</h4>
-          <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
-            Base de datos local activa. Cambios guardados de forma segura en memoria reactiva.
+          <h4 class="font-bold text-xs text-gray-200">Estado de Red</h4>
+          <p class="text-[10px] text-gray-500 mt-1 leading-relaxed">
+            Firebase: Esperando credenciales.
           </p>
           <div class="flex items-center gap-1.5 mt-3">
-            <span class="relative flex h-2 w-2">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span class="relative flex h-1.5 w-1.5">
+              <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-gray-500"></span>
             </span>
-            <span class="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider">
-              En línea
+            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">
+              En Espera
             </span>
           </div>
         </div>

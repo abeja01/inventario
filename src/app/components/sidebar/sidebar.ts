@@ -14,8 +14,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class SidebarComponent {
   navLinks = [
-    { path: '/dashboard', label: 'Panel de Control', icon: 'dashboard' },
-    { path: '/products', label: 'Productos', icon: 'restaurant_menu' },
-    { path: '/transactions', label: 'Movimientos', icon: 'swap_horiz' }
+    { path: '/dashboard', label: 'Resumen', icon: 'dashboard' },
+    { path: '/inventario', label: 'Inventario', icon: 'inventory_2' },
+    { path: '/categorias', label: 'Categorías', icon: 'label' },
+    { path: '/movimientos', label: 'Movimientos', icon: 'swap_horiz' },
+    { path: '/proveedores', label: 'Proveedores', icon: 'local_shipping' }
   ];
 }

@@ -1,0 +1,52 @@
+<div class="h-full flex flex-col gap-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-white">Categorías</h1>
+      <p class="text-xs text-gray-400 mt-1">Administra los grupos para clasificar tu inventario.</p>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-4">
+    <h3 class="text-sm font-bold text-white uppercase tracking-widest mb-4">Agregar Categoría</h3>
+    
+    <form (ngSubmit)="onSubmit()" #form="ngForm" class="flex flex-col sm:flex-row gap-4 items-end">
+      <div class="flex-1 w-full">
+        <label class="block text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Nombre de la Categoría</label>
+        <input type="text" [(ngModel)]="newCategory.name" name="name" required placeholder="Ej. Lácteos, Carnes, Bebidas"
+          class="w-full bg-black border border-neutral-700 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-white transition-colors">
+      </div>
+
+      <button type="submit" [disabled]="!form.valid"
+        class="w-full sm:w-auto bg-white hover:bg-gray-200 text-black font-bold py-2 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed h-[38px]">
+        Guardar
+      </button>
+    </form>
+  </div>
+
+  <!-- Lista -->
+  <div class="flex-1 min-h-0 bg-neutral-900 border border-neutral-800 rounded-xl overflow-y-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-black text-[10px] text-gray-400 uppercase tracking-widest border-b border-neutral-800">
+          <th class="p-4 font-bold w-full">Nombre</th>
+          <th class="p-4 font-bold text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (category of categories(); track category.id) {
+          <tr class="border-b border-neutral-800 hover:bg-neutral-800 transition-colors">
+            <td class="p-4 text-sm text-white font-semibold">{{ category.name }}</td>
+            <td class="p-4 text-center">
+              <button (click)="onDelete(category.id)" title="Eliminar categoría" class="w-8 h-8 rounded-lg bg-neutral-800 hover:bg-neutral-700 border border-neutral-600 text-gray-300 flex items-center justify-center mx-auto transition-colors">
+                <span class="material-symbols-outlined text-[16px]">delete</span>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="2" class="p-8 text-center text-gray-500 italic text-sm">No hay categorías registradas. ¡Agrega una arriba!</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

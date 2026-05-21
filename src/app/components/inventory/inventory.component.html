@@ -1,0 +1,16 @@
+<div class="h-full flex flex-col gap-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-white">Gestión de Inventario</h1>
+      <p class="text-xs text-gray-400 mt-1">Controla los productos y existencias.</p>
+    </div>
+  </div>
+
+  <!-- Componente Formulario para agregar / editar -->
+  <app-inventory-form></app-inventory-form>
+
+  <!-- Componente Lista de inventario -->
+  <div class="flex-1 min-h-0">
+    <app-inventory-list></app-inventory-list>
+  </div>
+</div>

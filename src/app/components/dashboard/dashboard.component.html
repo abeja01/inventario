@@ -1,0 +1,47 @@
+<div class="h-full flex flex-col gap-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-white">Resumen General</h1>
+      <p class="text-xs text-gray-400 mt-1">Vista rápida del estado del negocio.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Card 1 -->
+    <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-6 flex flex-col gap-2">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-gray-400">inventory_2</span>
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Productos</h3>
+      </div>
+      <p class="text-4xl font-bold text-white">{{ totalItems() }}</p>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="bg-black border border-neutral-700 rounded-xl p-6 flex flex-col gap-2 relative overflow-hidden">
+      <div class="flex items-center gap-3 relative z-10">
+        <span class="material-symbols-outlined text-white">warning</span>
+        <h3 class="text-xs font-bold text-white uppercase tracking-widest">Bajo Stock</h3>
+      </div>
+      <p class="text-4xl font-bold text-white relative z-10">{{ lowStockItems() }}</p>
+      <div class="absolute inset-0 bg-neutral-800 opacity-50"></div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="bg-neutral-800 border border-neutral-600 rounded-xl p-6 flex flex-col gap-2">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-gray-300">error</span>
+        <h3 class="text-xs font-bold text-gray-300 uppercase tracking-widest">Agotados</h3>
+      </div>
+      <p class="text-4xl font-bold text-white">{{ outOfStockItems() }}</p>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-6 flex flex-col gap-2">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-gray-400">local_shipping</span>
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Proveedores</h3>
+      </div>
+      <p class="text-4xl font-bold text-white">{{ totalSuppliers() }}</p>
+    </div>
+  </div>
+</div>

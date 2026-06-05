@@ -1,8 +1,11 @@
-<div class="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
+<div class="bg-[#111827]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-black/20">
   
-  <table class="w-full text-left border-collapse">
+  <table class="w-full text-left border-separate border-spacing-y-2">
+
+
+    
     <thead>
-      <tr class="bg-black text-[10px] text-gray-400 uppercase tracking-widest border-b border-neutral-800">
+      <tr class="bg-[#0f172a] hover:bg-[#1e293b] transition-all duration-300">
         <th class="p-4 font-bold">Producto</th>
         <th class="p-4 font-bold text-center">Estado de Stock</th>
         <th class="p-4 font-bold text-center">Cantidad</th>
@@ -13,13 +16,13 @@
     <tbody>
       @for (item of items(); track item.id) {
         <tr class="border-b border-neutral-800 hover:bg-neutral-800 transition-colors">
-          <td class="p-4">
+          <td class="p-4 first:rounded-1-2x1 last:rounded-r-2x1">
             <p class="text-sm text-gray-100 font-semibold">{{ item.name }}</p>
             <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{{ item.category || 'Sin Categoría' }}</p>
           </td>
           
           <!-- Estado de Stock -->
-          <td class="p-4 text-center">
+          <td class="p-4 first:rounded-l-2xl last:rounded-r-2xl">
             @if (item.quantity > 10) {
               <span class="inline-flex items-center px-2 py-1 rounded bg-neutral-800 border border-neutral-700 text-xs text-white">
                 En Stock
@@ -35,22 +38,22 @@
             }
           </td>
 
-          <td class="p-4 text-center">
+          <td class="p-4 first:rounded-l-2xl last:rounded-r-2xl">
             <span class="text-sm font-mono text-gray-300">
               {{ item.quantity }}
             </span>
           </td>
           
-          <td class="p-4 text-right text-sm text-white font-mono">
+          <td class="p-4 first:rounded-l-2xl last:rounded-r-2xl">
             ${{ item.price | number:'1.2-2' }}
           </td>
           
-          <td class="p-4 text-center">
+          <td class="p-4 first:rounded-l-2xl last:rounded-r-2xl">
             <div class="flex items-center justify-center gap-2">
               <button 
                 (click)="onEdit(item)"
                 title="Editar producto"
-                class="w-8 h-8 rounded-lg bg-neutral-800 hover:bg-neutral-700 border border-neutral-600 text-gray-300 transition-colors flex items-center justify-center">
+                class="w-9 h-9 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-blue-400 transition-all duration-300 flex items-center justify-center hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20">
                 <span class="material-symbols-outlined text-[16px]">edit</span>
               </button>
               <button 
@@ -64,7 +67,7 @@
         </tr>
       } @empty {
         <tr>
-          <td colspan="5" class="p-8 text-center text-sm text-gray-500 italic">
+          <td class="p-4 first:rounded-l-2xl last:rounded-r-2xl">
             No hay productos en el inventario. Utiliza el formulario superior para agregar uno.
           </td>
         </tr>
